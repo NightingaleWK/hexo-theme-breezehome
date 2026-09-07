@@ -1,0 +1,12 @@
+# Copy overrides to your blog's _config.breezehome.yml.
+# Profile data may also live in source/_data/profile.yml (recommended).
+profile:
+  greeting: 你好，欢迎来访。
+  intro: 这里记录生活、工作与学习。
+  about: 一处存放文字与经历的地方。
+  work: []
+  life: []
+  links: []
+copyright_start:
+beian:
+rss: /atom.xml

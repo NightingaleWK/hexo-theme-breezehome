@@ -1,0 +1,6 @@
+<% const type=page.bhType || (page.path===config.category_dir+'/index.html'?'categories':page.path===config.tag_dir+'/index.html'?'tags':page.path==='search/index.html'?'search':'page'); %>
+<div class="page-heading"><h1><%= {categories:'分类',tags:'标签',search:'搜索','404':'页面未找到'}[type] || page.title %></h1></div>
+<% if(type==='categories'||type==='tags'){ %><ul class="taxonomy <%= type %>"><% site[type].sort('name',1).forEach(item=>{ %><li><a href="<%= url_for(item.path) %>"><%= item.name %><small><%= item.length %></small></a></li><% }); %></ul>
+<% }else if(type==='search'){ %><form class="search-form" role="search"><label class="skip" for="q">搜索关键词</label><input id="q" name="q" type="search" placeholder="输入关键词，例如部署…" autocomplete="off"><button type="submit">搜索</button></form><p id="search-status" role="status" class="muted"></p><noscript>搜索需要启用 JavaScript，可通过<a href="<%= url_for('/'+config.archive_dir+'/') %>">归档</a>阅读文章。</noscript><div id="results"></div>
+<% }else if(type==='404'){ %><p>这个地址没有对应的页面。你可以<a href="<%= url_for('/') %>">返回首页</a>，或<a href="<%= url_for('/search/') %>">搜索文章</a>。</p>
+<% }else{ %><div class="prose"><%- page.content %></div><% } %>

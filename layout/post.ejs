@@ -1,0 +1,5 @@
+<article><div class="post-header"><div class="eyebrow"><a href="<%= url_for('/'+config.archive_dir+'/') %>">← 归档</a></div><h1><%= page.title %></h1><div class="meta"><time datetime="<%= date_xml(page.date) %>"><%= date(page.date) %></time> · <%= page.author || config.author %><% if(page.updated && +page.updated>+page.date){ %> · 更新于 <%= date(page.updated) %><% } %><br><% page.categories.forEach(c=>{ %><a href="<%= url_for(c.path) %>"><%= c.name %></a><% }); %></div></div>
+<% const contents=toc(page.content,{list_number:false}); if(contents){ %><details class="toc"><summary>文章目录</summary><%- contents %></details><% } %>
+<div class="prose"><%- page.content %></div>
+<div class="inline-links"><% page.tags.forEach(t=>{ %><a href="<%= url_for(t.path) %>">#<%= t.name %></a><% }); %></div>
+<div class="post-bottom"><% if(page.prev){ %><a href="<%= url_for(page.prev.path) %>">上一篇：<%= page.prev.title %></a><% } %><% if(page.next){ %><a href="<%= url_for(page.next.path) %>">下一篇：<%= page.next.title %></a><% } %></div></article>

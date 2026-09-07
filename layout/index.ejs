@@ -1,0 +1,5 @@
+<% const profile=site.data.profile || theme.profile || {}; %>
+<section class="intro"><div class="eyebrow"><%= config.author %> / 个人主页</div><h1><%= profile.greeting || '你好，欢迎来访。' %></h1><p class="lead"><%= profile.intro || '' %></p><div class="inline-links"><a href="<%= url_for('/'+config.archive_dir+'/') %>">阅读文章 →</a><%- bh_links(profile.links) %></div></section>
+<% if(profile.about){ %><section class="home-section"><h2>关于本站</h2><p><%= profile.about %></p></section><% } %>
+<% [['work','工作经历'],['life','人生履历']].forEach(([key,label])=>{const entries=profile[key] || []; %>
+<section class="home-section"><h2><%= label %><% if(!entries.length){ %> <span class="pending">待补充</span><% } %></h2><div><% if(!entries.length){ %><p class="muted">尚未填写。</p><% } entries.forEach(entry=>{ %><div class="entry"><span class="muted"><%= entry.period %></span><div><strong><%= entry.title %></strong><p><%= entry.description %></p></div></div><% }); %></div></section><% }); %>
