@@ -1,12 +1,17 @@
 {
   "name": "hexo-theme-breezehome",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.3",
   "description": "A restrained, content-first Hexo theme with a personal homepage.",
   "license": "MIT",
   "author": "NightingaleWK",
   "repository": {"type":"git","url":"https://github.com/NightingaleWK/hexo-theme-breezehome.git"},
   "engines": {"node": ">=20.19.0"},
-  "scripts": {"test":"node test/smoke.cjs"},
+  "scripts": {"test":"node test/smoke.cjs", "test:site":"node test/site-compat.cjs", "test:lifecycle":"node test/lifecycle.cjs"},
+  "dependencies": {
+    "katex": "0.18.7",
+    "marked": "4.3.0",
+    "mermaid": "11.17.2"
+  },
   "devDependencies": {
     "hexo": "8.1.2",
     "hexo-renderer-ejs": "2.0.0",
