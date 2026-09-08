@@ -2,7 +2,7 @@
 
 一个克制、内容优先的 Hexo 主题。首页介绍自己，通过归档阅读文章。系统字体、原生 CSS 和少量 JavaScript，避免装饰性动效和全站加载的第三方前端库。
 
-**当前版本：0.1.0-alpha.1。开发预览版，尚未完成全部正文扩展与浏览器兼容验收。**
+**当前版本：0.1.0-alpha.2。开发预览版，尚未完成全部正文扩展与浏览器兼容验收。**
 
 ## 已有功能
 
@@ -16,11 +16,11 @@
 
 ## 安装（Git 管理）
 
-要求 Hexo 7、Node.js 18 及以上。已在 Hexo 7.3.0 验证。请在独立的 Hexo 博客目录执行，并遵循该目录自己的 Git 管理约定。
+主题仅跟进 Hexo 最新稳定版，当前支持与测试基线为 Hexo 8.1.2，要求 Node.js 20.19.0 及以上。不再维护 Hexo 7.x 及更早版本的兼容性。后续稳定版发布后，更新依赖并完成验证，再调整支持基线。请在独立的 Hexo 博客目录执行，并遵循该目录自己的 Git 管理约定。
 
 ```sh
 git submodule add https://github.com/NightingaleWK/hexo-theme-breezehome.git themes/breezehome
-git -C themes/breezehome checkout v0.1.0-alpha.1
+git -C themes/breezehome checkout v0.1.0-alpha.2
 npm install hexo-renderer-ejs hexo-renderer-marked hexo-generator-archive hexo-generator-category hexo-generator-tag
 ```
 
@@ -83,7 +83,8 @@ Markdown 与 Hexo 标签语法由博客的渲染流程处理。**本版本尚未
 ## 版本与升级
 
 - `main`：当前开发代码。
-- `v0.1.0-alpha.1`：首个可构建 Alpha 快照。
+- `v0.1.0-alpha.1`：首个可构建 Alpha 快照（历史版本）。
+- `v0.1.0-alpha.2`：Hexo 8.1.2 支持与测试基线。
 - 使用 `CHANGELOG.md` 记录变化；后续修复增加预发布版本号。
 - 功能和验收清单完成后再发布稳定版，安装时固定版本标签。
 - 主题仓库只包含主题、文档和原创测试样例，不包含个人博客文章、配置、搜索索引或部署产物。
@@ -99,7 +100,7 @@ npm test
 
 测试在系统临时目录创建独立 Hexo 站点，检查原生构建、归档、分类标签入口、搜索排除、子目录资源及永久链接。测试样例为原创内容。临时结果保留供排查。
 
-本版已完成 Hexo 7.3.0 构建测试；原型阶段已检查 Chromium 桌面与手机尺寸的排版、明暗切换和搜索。正式主题仍需继续完成跨浏览器、媒体及正文扩展验收。详细计划见 [ROADMAP.md](ROADMAP.md)。
+当前独立构建测试基于 Hexo 8.1.2，主题开发依赖固定为该版本。2026-09-08，在 Node.js 26.3.0 环境下通过主题构建测试及当前博客的 npm run build。构建验证不代表已完成全部浏览器兼容性验收。原型阶段已检查 Chromium 桌面与手机尺寸的排版、明暗切换和搜索。正式主题仍需继续完成跨浏览器、媒体及正文扩展验收。详细计划见 [ROADMAP.md](ROADMAP.md)。
 
 ## 许可证
 

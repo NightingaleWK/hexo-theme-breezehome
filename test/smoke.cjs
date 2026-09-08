@@ -4,13 +4,15 @@ const root=path.resolve(__dirname,'..');
 // Optional dependency source enables testing without changing another blog.
 const req=createRequire(path.join(process.argv[2]?path.resolve(process.argv[2]):root,'package.json'));
 const Hexo=req('hexo');
+const hexoVersion=req('hexo/package.json').version;
+assert.equal(hexoVersion,require('../package.json').devDependencies.hexo,'test must use the supported Hexo version');
 const base=fs.mkdtempSync(path.join(os.tmpdir(),'breezehome-smoke-'));
 function write(file,text){const dest=path.join(base,file);fs.mkdirSync(path.dirname(dest),{recursive:true});fs.writeFileSync(dest,text);}
 fs.cpSync(path.join(root,'layout'),path.join(base,'themes/breezehome/layout'),{recursive:true});
 fs.cpSync(path.join(root,'source'),path.join(base,'themes/breezehome/source'),{recursive:true});
 fs.cpSync(path.join(root,'scripts'),path.join(base,'themes/breezehome/scripts'),{recursive:true});
 fs.copyFileSync(path.join(root,'_config.yml'),path.join(base,'themes/breezehome/_config.yml'));
-write('package.json','{"name":"theme-smoke","version":"1.0.0","hexo":{"version":"7.3.0"}}');
+write('package.json',JSON.stringify({name:'theme-smoke',version:'1.0.0',hexo:{version:hexoVersion}}));
 write('_config.yml','title: Breezehome Test\nauthor: Example\nurl: https://example.org/notebook\nroot: /notebook/\npermalink: :year/:month/:day/:title/\ntheme: breezehome\nsyntax_highlighter: highlight.js\n');
 write('source/_posts/example.md','---\ntitle: 中文与代码\ndate: 2026-01-02 12:00:00\ncategories: [技术]\ntags: [Hexo]\n---\n## 正文标题\n\n这是原创测试样例。\n\n```js\nconsole.log("Breezehome");\n```\n\n| 键 | 值 |\n| --- | --- |\n| foo | bar |\n');
 write('source/_posts/excluded.md','---\ntitle: Not searchable\ndate: 2026-01-01\nsearch: false\n---\nThis published post opts out of search.');
