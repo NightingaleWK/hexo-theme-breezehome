@@ -17,11 +17,12 @@
   <% if (hasMermaid) { %><script defer src="<%= url_for('/js/vendor/mermaid.min.js') %>"></script><script defer src="<%= url_for('/js/mermaid.js') %>"></script><% } %>
   <script defer src="<%= url_for('/js/site.js') %>"></script>
 </head>
-<body data-search-index="<%= url_for('/search-index.json') %>">
+<body id="top" data-search-index="<%= url_for('/search-index.json') %>">
 <a class="skip" href="#main">跳到正文</a>
 <header><a class="brand" href="<%= url_for('/') %>"><%= config.title %></a><nav aria-label="主导航">
 <% [['首页','/'],['归档','/'+config.archive_dir+'/'],['分类','/'+config.category_dir+'/'],['标签','/'+config.tag_dir+'/'],['搜索','/search/']].forEach(([label,path])=> { %><a href="<%= url_for(path) %>" <% if (url_for(page.path || '') === url_for(path) || url_for(page.path || '') === url_for(path+'index.html')) { %>aria-current="page"<% } %>><%= label %></a><% }); %>
 <button class="theme" type="button">跟随系统</button></nav></header>
 <main id="main" tabindex="-1" class="<%= is_post() ? 'post-layout' : '' %>"><%- body %></main>
 <footer><p>© <%= theme.copyright_start ? theme.copyright_start+'–' : '' %><%= date(Date.now(),'YYYY') %> <%= config.author %></p><p><% if(theme.beian){ %><a href="https://beian.miit.gov.cn/"><%= theme.beian %></a> · <% } %><% if(theme.rss){ %><a href="<%= url_for(theme.rss) %>">RSS</a> · <% } %><a href="https://github.com/NightingaleWK/hexo-theme-breezehome">Breezehome</a></p></footer>
+<a class="back-to-top" href="#top" aria-label="回到顶部" title="回到顶部"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14M12 20V8m-6 6 6-6 6 6"/></svg></a>
 </body></html>

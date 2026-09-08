@@ -70,6 +70,9 @@ write('source/fixture.svg','<svg xmlns="http://www.w3.org/2000/svg" width="960" 
  assert.match(post,/<main id="main" tabindex="-1"/,'skip link target accepts keyboard focus');
  assert.ok(read('2026/01/03/media/index.html').includes('fixture-video.js') && read('fixture-video.js').includes('MediaRecorder'),'local video fixture available');
  assert.ok(post.includes('正文标题') && post.includes('highlight'),'post rendering');
+ assert.ok(post.includes('class="post-toc"') && post.includes('class="toc-scroll"'),'persistent TOC wrapper');
+ assert.ok(post.includes('id="top"') && post.includes('class="back-to-top"') && post.includes('aria-label="回到顶部"'),'accessible back-to-top');
+ assert.ok(read('archives/index.html').includes('class="back-to-top"') && !read('archives/index.html').includes('class="post-toc"'),'global button and article-only TOC');
  assert.ok(post.includes('data-bh-mermaid') && !post.includes('language-mermaid'),'Mermaid fence conversion');
  assert.ok(post.includes('bh-math-block') && post.includes('katex'),'math rendering');
  assert.ok(post.includes('bh-footnotes') && post.includes('脚注'),'footnote rendering');
@@ -83,5 +86,5 @@ write('source/fixture.svg','<svg xmlns="http://www.w3.org/2000/svg" width="960" 
  assert.equal(index.length,1,'draft and search:false excluded');
  assert.equal(index[0].url,'/notebook/2026/01/02/example/','original permalink');
  await hexo.exit();
- console.log(JSON.stringify({passed:true,hexo:require(req.resolve('hexo/package.json')).version,output:path.join(base,'public'),checks:17}));
+ console.log(JSON.stringify({passed:true,hexo:require(req.resolve('hexo/package.json')).version,output:path.join(base,'public'),checks:20}));
 })().catch(error=>{console.error(error);process.exitCode=1;});
