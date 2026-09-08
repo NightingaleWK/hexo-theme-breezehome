@@ -21,7 +21,7 @@
 <body id="top" data-search-index="<%= url_for('/search-index.json') %>">
 <a class="skip" href="#main">跳到正文</a>
 <header><a class="brand" href="<%= url_for('/') %>"><%= config.title %></a><nav aria-label="主导航">
-<% [['首页','/'],['归档','/'+config.archive_dir+'/'],['分类','/'+config.category_dir+'/'],['标签','/'+config.tag_dir+'/'],['搜索','/search/']].forEach(([label,path])=> { %><a href="<%= url_for(path) %>" <% if (url_for(page.path || '') === url_for(path) || url_for(page.path || '') === url_for(path+'index.html')) { %>aria-current="page"<% } %>><%= label %></a><% }); %>
+<% [['首页','/'],['归档','/'+config.archive_dir+'/'],['分类','/'+config.category_dir+'/'],['标签','/'+config.tag_dir+'/'],['友链','/links/'],['搜索','/search/']].forEach(([label,path])=> { %><a href="<%= url_for(path) %>" <% if (url_for(page.path || '') === url_for(path) || url_for(page.path || '') === url_for(path+'index.html')) { %>aria-current="page"<% } %>><%= label %></a><% }); %>
 <button class="theme" type="button">跟随系统</button></nav></header>
 <main id="main" tabindex="-1" class="<%= is_post() ? 'post-layout' : '' %>"><%- body %></main>
 <footer><p>© <%= theme.copyright_start ? theme.copyright_start+'–' : '' %><%= date(Date.now(),'YYYY') %> <%= config.author %></p><p><% if(theme.beian){ %><a href="<%= theme.beian_url || 'https://beian.miit.gov.cn/' %>"><%= theme.beian %></a> · <% } %><% if(theme.rss){ %><a href="<%= url_for(theme.rss) %>">RSS</a> · <% } %><a href="https://github.com/NightingaleWK/hexo-theme-breezehome">Breezehome</a></p></footer>
