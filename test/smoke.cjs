@@ -59,6 +59,8 @@ write('source/tags/index.md','---\ntitle: tags\n---\n');
 write('source/_posts/media.md',fs.readFileSync(path.join(root,'test/fixtures/media.md'),'utf8'));
 write('source/fixture-video.js',fs.readFileSync(path.join(root,'test/fixtures/video.js'),'utf8'));
 write('source/fixture.svg','<svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300"><rect width="960" height="300" fill="#386651"/><circle cx="480" cy="150" r="100" fill="#fafaf8"/></svg>');
+write('_config.breezehome.yml','home_stylesheet: /css/custom-home.css\nbeian: 示例备案号\nbeian_url: https://beian.miit.gov.cn/#/Integrated/index\n');
+write('source/css/custom-home.css','.home-page{letter-spacing:normal}');
 (async()=>{
  const hexo=new Hexo(base,{silent:true});
  for(const name of ['hexo-renderer-ejs','hexo-renderer-marked','hexo-generator-archive','hexo-generator-category','hexo-generator-tag'])await hexo.loadPlugin(req.resolve(name));
@@ -85,6 +87,38 @@ write('source/fixture.svg','<svg xmlns="http://www.w3.org/2000/svg" width="960" 
  const index=JSON.parse(read('search-index.json'));
  assert.equal(index.length,1,'draft and search:false excluded');
  assert.equal(index[0].url,'/notebook/2026/01/02/example/','original permalink');
+ assert.ok(read('index.html').includes('你好，欢迎来访。') && !read('index.html').includes('尚未填写'),'legacy homepage remains available without empty sections');
+ write('source/index.md',[
+  '---','layout: home','title: ""','description: Custom home description','---',
+  '# 自由首页','','正文 **强调** 与 [归档](archives/)。','',
+  '<details><summary>展开内容</summary><p>原生 HTML 内容</p></details>','',
+  '| 名称 | 内容 |','| --- | --- |','| 首页 | 表格 |','',
+  '```js','console.log("home");','```','',
+  '```mermaid','flowchart LR',' A --> B','```','',
+  '行内公式 $a^2$。脚注[^home]。','','[^home]: 首页脚注。'
+ ].join('\n'));
+ await hexo.call('generate',{silent:true});
+ const homepage=read('index.html');
+ assert.ok(homepage.includes('class="prose home-page"') && homepage.includes('自由首页') && homepage.includes('<strong>强调</strong>'),'Markdown homepage rendering');
+ assert.ok(homepage.includes('<details>') && homepage.includes('<table>') && homepage.includes('highlight'),'homepage HTML, table and code support');
+ assert.ok(!homepage.includes('class="intro"') && !homepage.includes('尚未填写') && !homepage.includes('class="post-toc"') && !homepage.includes('class="post-bottom"'),'custom homepage has no legacy or article chrome');
+ assert.ok(homepage.includes('data-bh-mermaid') && homepage.includes('mermaid.min.js') && homepage.includes('katex.min.css') && homepage.includes('bh-footnotes'),'homepage rich text assets');
+ assert.ok(homepage.includes('href="/notebook/css/custom-home.css"') && read('css/custom-home.css').length,'homepage-only custom stylesheet with subdirectory root');
+ assert.ok(!read('archives/index.html').includes('custom-home.css') && !read('2026/01/02/example/index.html').includes('custom-home.css'),'custom styles do not load on other layouts');
+ assert.ok(homepage.includes('<title>Breezehome Test</title>') && homepage.includes('https://example.org/notebook/') && homepage.includes('Custom home description'),'homepage metadata');
+ assert.ok(homepage.includes('href="https://beian.miit.gov.cn/#/Integrated/index">示例备案号</a>'),'custom homepage keeps configured footer');
+ assert.deepEqual(await hexo.extend.generator.get('index').call(hexo,hexo.locals.toObject()),[],'legacy index generator yields to source homepage');
+ assert.equal(JSON.parse(read('search-index.json')).length,1,'homepage is not added to the article search index');
+ write('source/index.md','---\nlayout: home\ntitle: ""\n---\n# 更新后的首页\n\n修改正文立即生效。');
+ await hexo.call('generate',{silent:true});
+ assert.ok(read('index.html').includes('更新后的首页') && !read('index.html').includes('自由首页') && !read('index.html').includes('mermaid.min.js'),'homepage editing updates content and conditional assets');
+ fs.renameSync(path.join(base,'source/index.md'),path.join(base,'homepage-markdown.fixture'));
+ write('source/index.html','---\nlayout: home\ntitle: ""\n---\n<h1>HTML 首页</h1><p>保留 HTML 自定义布局。</p>');
+ await hexo.call('generate',{silent:true});
+ assert.ok(read('index.html').includes('class="prose home-page"') && read('index.html').includes('<h1>HTML 首页</h1>'),'HTML source homepage');
+ fs.renameSync(path.join(base,'source/index.html'),path.join(base,'homepage-html.fixture'));
+ await hexo.call('generate',{silent:true});
+ assert.ok(read('index.html').includes('你好，欢迎来访。') && !read('index.html').includes('HTML 首页'),'removing custom homepage restores profile mode');
  await hexo.exit();
- console.log(JSON.stringify({passed:true,hexo:require(req.resolve('hexo/package.json')).version,output:path.join(base,'public'),checks:20}));
+ console.log(JSON.stringify({passed:true,hexo:require(req.resolve('hexo/package.json')).version,output:path.join(base,'public'),checks:34}));
 })().catch(error=>{console.error(error);process.exitCode=1;});

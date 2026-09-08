@@ -14,7 +14,10 @@ hexo.extend.helper.register('bh_posts', function(posts) {
   return html+(year?'</ul></section>':'<p class="muted">还没有文章。</p>');
 });
 // Theme scripts are loaded after site plugins; replace the article-stream homepage.
-hexo.extend.generator.register('index', () => ({path:'index.html',layout:'index',data:{title:''}}));
+hexo.extend.generator.register('index', function(locals) {
+  if (locals.pages.some(page => page.path === 'index.html')) return [];
+  return {path:'index.html',layout:'index',data:{title:''}};
+});
 hexo.extend.generator.register('breezehome-pages', function(locals) {
   const existing = new Set(locals.pages.map(page => page.path));
   return [
