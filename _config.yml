@@ -9,6 +9,8 @@ profile:
   links: []
 copyright_start:
 home_stylesheet:
+favicon:
+logo:
 beian:
 beian_url: https://beian.miit.gov.cn/
 rss: /atom.xml

@@ -9,6 +9,7 @@
   <title><%= page.title ? page.title + ' · ' : '' %><%= config.title %></title>
   <meta name="description" content="<%= strip_html(page.description || config.description || '') %>">
   <link rel="canonical" href="<%= full_url_for(page.path || '') %>">
+  <% if (theme.favicon) { %><link rel="icon" href="<%= url_for(theme.favicon) %>"><% } %>
   <%- open_graph({twitter_card:'summary'}) %>
   <script>try{let t=localStorage.getItem('breeze-theme');document.documentElement.dataset.theme=t==='light'||t==='dark'?t:matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'}catch{document.documentElement.dataset.theme=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'}</script>
   <link rel="stylesheet" href="<%= url_for('/css/site.css') %>">
@@ -20,7 +21,7 @@
 </head>
 <body id="top" data-search-index="<%= url_for('/search-index.json') %>">
 <a class="skip" href="#main">跳到正文</a>
-<header><a class="brand" href="<%= url_for('/') %>"><%= config.title %></a><nav aria-label="主导航">
+<header><a class="brand" href="<%= url_for('/') %>"><% if (theme.logo) { %><img class="brand-logo" src="<%= url_for(theme.logo) %>" alt="" width="32" height="32"><% } %><span><%= config.title %></span></a><nav aria-label="主导航">
 <% [['首页','/'],['归档','/'+config.archive_dir+'/'],['分类','/'+config.category_dir+'/'],['标签','/'+config.tag_dir+'/'],['友链','/links/'],['搜索','/search/']].forEach(([label,path])=> { %><a href="<%= url_for(path) %>" <% if (url_for(page.path || '') === url_for(path) || url_for(page.path || '') === url_for(path+'index.html')) { %>aria-current="page"<% } %>><%= label %></a><% }); %>
 <button class="theme" type="button">跟随系统</button></nav></header>
 <main id="main" tabindex="-1" class="<%= is_post() ? 'post-layout' : '' %>"><%- body %></main>

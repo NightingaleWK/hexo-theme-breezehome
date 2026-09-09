@@ -49,6 +49,8 @@ npx hexo server
 
 ## 个人内容
 
+在博客 `_config.breezehome.yml` 中设置 `favicon: /favicon.ico` 和 `logo: /images/logo.jpg`，可启用浏览器图标和站名左侧的 32 像素 logo；留空则不显示。对应图片放在博客 `source/` 下，个人资源不放入主题仓库。
+
 ### 自由首页（推荐）
 
 在博客创建 `source/index.md`，使用以下 Front Matter。标题及栏目全部由正文决定，不要求填写固定的个人资料字段：
