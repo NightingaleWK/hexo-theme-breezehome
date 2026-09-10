@@ -165,3 +165,9 @@ npm run test:lifecycle -- D:/blog
 ## 许可证
 
 [MIT](LICENSE)。第三方依赖沿用各自许可证，本仓库未复制第三方前端库。
+
+### Optional navigation and content status
+
+Set navigation in the blog theme override to a list of {label, url}; URLs are local absolute paths. Omit it to keep the default menu. A page may set stylesheet to a local absolute CSS path.
+
+Posts may set content_status with kind (current, historical, memory, pending), scope, note, checked (quoted date string), and topic (local absolute path). The theme renders a notice, archive badges, and an optional status label in search-index.json. Unconfigured posts and older search indexes remain supported. Server-specific content and grouping belong in the blog repository.

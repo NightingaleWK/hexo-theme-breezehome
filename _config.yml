@@ -14,3 +14,7 @@ logo:
 beian:
 beian_url: https://beian.miit.gov.cn/
 rss: /atom.xml
+
+# Optional list of {label, url}; URLs must be local absolute paths.
+# Omit to keep the default navigation.
+navigation:

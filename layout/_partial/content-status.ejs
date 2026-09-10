@@ -1,0 +1,8 @@
+<% const status = bh_status(page); if(status){ %>
+<aside class="content-notice" aria-label="资料适用说明" data-status="<%= status.kind %>">
+  <strong><%= status.label %></strong><% if(status.scope){ %><span> · <%= status.scope %></span><% } %>
+  <% if(status.note){ %><p><%= status.note %></p><% } %>
+  <% if(status.checked){ %><small>内容核对：<%= status.checked %></small><% } %>
+  <% if(status.topic && /^\/(?!\/)/.test(status.topic)){ %><a href="<%= url_for(status.topic) %>">查看专题与当前指南 →</a><% } %>
+</aside>
+<% } %>

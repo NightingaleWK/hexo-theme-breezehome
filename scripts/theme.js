@@ -9,7 +9,7 @@ hexo.extend.helper.register('bh_posts', function(posts) {
   posts.sort('date',-1).forEach(post => {
     const next=this.date(post.date,'YYYY');
     if(next!==year){if(year)html+='</ul></section>';year=next;html+=`<section class="year"><h2>${escape(year)}</h2><ul class="article-list">`;}
-    html+=`<li><a href="${escape(this.url_for(post.path))}">${escape(post.title)}</a></li>`;
+    html+=`<li><a href="${escape(this.url_for(post.path))}">${escape(post.title)}</a> ${this.bh_status_badge(post)}</li>`;
   });
   return html+(year?'</ul></section>':'<p class="muted">还没有文章。</p>');
 });
@@ -31,7 +31,7 @@ hexo.extend.generator.register('breezehome-search', function(locals) {
   const decode = text => String(text).replace(/&#(x[0-9a-f]+|\d+);/gi, (_,n)=>{const code=n[0].toLowerCase()==='x'?parseInt(n.slice(1),16):Number(n);return code<=0x10ffff?String.fromCodePoint(code):'';}).replace(/&(amp|lt|gt|quot|apos|nbsp);/g,(_,n)=>({amp:'&',lt:'<',gt:'>',quot:'"',apos:"'",nbsp:' '}[n]));
   const root=this.config.root || '/';
   const data=locals.posts.sort('date',-1).filter(p=>p.published!==false && p.search!==false).map(p=>({
-    title:p.title,url:root+p.path,taxonomy:p.categories.map(c=>c.name).concat(p.tags.map(t=>t.name)).join(' '),
+    title:p.title,url:root+p.path,status:({current:'当前指南',historical:'历史资料',memory:'玩家回忆',pending:'待核实'})[p.content_status && p.content_status.kind] || undefined,taxonomy:p.categories.map(c=>c.name).concat(p.tags.map(t=>t.name)).join(' '),
     text:decode((p.content||'').replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi,' ').replace(/<[^>]+>/g,' ')).replace(/\s+/g,' ').trim()
   }));
   return {path:'search-index.json',data:JSON.stringify(data)};

@@ -1,4 +1,5 @@
 <article><div class="post-header"><div class="eyebrow"><a href="<%= url_for('/'+config.archive_dir+'/') %>">← 归档</a></div><h1><%= page.title %></h1><div class="meta"><time datetime="<%= date_xml(page.date) %>"><%= date(page.date) %></time> · <%= page.author || config.author %><% if(page.updated && +page.updated>+page.date){ %> · 更新于 <%= date(page.updated) %><% } %><br><% page.categories.forEach(c=>{ %><a href="<%= url_for(c.path) %>"><%= c.name %></a><% }); %></div></div>
+<%- partial('_partial/content-status') %>
 <% const contents=toc(page.content,{list_number:false}); if(contents){ %><details class="post-toc"><summary>文章目录</summary><div class="toc-scroll" role="navigation" aria-label="文章目录"><%- contents %></div></details><% } %>
 <div class="prose"><%- page.content %></div>
 <div class="inline-links"><% page.tags.forEach(t=>{ %><a href="<%= url_for(t.path) %>">#<%= t.name %></a><% }); %></div>

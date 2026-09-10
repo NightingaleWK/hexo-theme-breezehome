@@ -14,6 +14,7 @@
   <script>try{let t=localStorage.getItem('breeze-theme');document.documentElement.dataset.theme=t==='light'||t==='dark'?t:matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'}catch{document.documentElement.dataset.theme=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'}</script>
   <link rel="stylesheet" href="<%= url_for('/css/site.css') %>">
   <% if (page.layout === 'home' && theme.home_stylesheet) { %><link rel="stylesheet" href="<%= url_for(theme.home_stylesheet) %>"><% } %>
+  <% if (page.stylesheet && /^\/(?!\/)/.test(page.stylesheet)) { %><link rel="stylesheet" href="<%= url_for(page.stylesheet) %>"><% } %>
   <% if (hasMath) { %><link rel="stylesheet" href="<%= url_for('/css/vendor/katex/katex.min.css') %>"><% } %>
   <% if (theme.rss) { %><link rel="alternate" type="application/atom+xml" title="RSS" href="<%= url_for(theme.rss) %>"><% } %>
   <% if (hasMermaid) { %><script defer src="<%= url_for('/js/vendor/mermaid.min.js') %>"></script><script defer src="<%= url_for('/js/mermaid.js') %>"></script><% } %>
@@ -22,7 +23,7 @@
 <body id="top" data-search-index="<%= url_for('/search-index.json') %>">
 <a class="skip" href="#main">跳到正文</a>
 <header><a class="brand" href="<%= url_for('/') %>"><% if (theme.logo) { %><img class="brand-logo" src="<%= url_for(theme.logo) %>" alt="" width="32" height="32"><% } %><span><%= config.title %></span></a><nav aria-label="主导航">
-<% [['首页','/'],['归档','/'+config.archive_dir+'/'],['分类','/'+config.category_dir+'/'],['标签','/'+config.tag_dir+'/'],['友链','/links/'],['搜索','/search/']].forEach(([label,path])=> { %><a href="<%= url_for(path) %>" <% if (url_for(page.path || '') === url_for(path) || url_for(page.path || '') === url_for(path+'index.html')) { %>aria-current="page"<% } %>><%= label %></a><% }); %>
+<% bh_navigation().forEach(({label,url:path})=> { %><a href="<%= url_for(path) %>" <% if (url_for(page.path || '') === url_for(path) || url_for(page.path || '') === url_for(path+'index.html')) { %>aria-current="page"<% } %>><%= label %></a><% }); %>
 <button class="theme" type="button" data-mode="system" aria-label="当前跟随系统，点击切换浅色" title="当前：跟随系统；点击切换浅色">
 <svg class="theme-icon theme-icon-system" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4m-4 0h8"/></svg>
 <svg class="theme-icon theme-icon-light" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
